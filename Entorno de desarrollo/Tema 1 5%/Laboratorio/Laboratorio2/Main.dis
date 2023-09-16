@@ -1,0 +1,28 @@
+Compiled from "Main.java"
+public class Main {
+  public Main();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: getstatic     #7                  // Field java/lang/System.out:Ljava/io/PrintStream;
+       3: ldc           #13                 // String Números del 1 al 10:
+       5: invokevirtual #15                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+       8: iconst_1
+       9: istore_1
+      10: iload_1
+      11: bipush        10
+      13: if_icmpgt     34
+      16: getstatic     #7                  // Field java/lang/System.out:Ljava/io/PrintStream;
+      19: iload_1
+      20: invokedynamic #21,  0             // InvokeDynamic #0:makeConcatWithConstants:(I)Ljava/lang/String;
+      25: invokevirtual #25                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+      28: iinc          1, 1
+      31: goto          10
+      34: getstatic     #7                  // Field java/lang/System.out:Ljava/io/PrintStream;
+      37: invokevirtual #28                 // Method java/io/PrintStream.println:()V
+      40: return
+}

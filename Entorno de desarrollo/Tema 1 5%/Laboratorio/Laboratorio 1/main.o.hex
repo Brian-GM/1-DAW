@@ -1,0 +1,30 @@
+
+main.o:     file format pe-i386
+
+
+Disassembly of section .text:
+
+00000000 <_main>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	83 e4 f0             	and    $0xfffffff0,%esp
+   6:	83 ec 20             	sub    $0x20,%esp
+   9:	e8 00 00 00 00       	call   e <_main+0xe>
+   e:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+  15:	e8 00 00 00 00       	call   1a <_main+0x1a>
+  1a:	c7 44 24 1c 01 00 00 	movl   $0x1,0x1c(%esp)
+  21:	00 
+  22:	eb 19                	jmp    3d <_main+0x3d>
+  24:	8b 44 24 1c          	mov    0x1c(%esp),%eax
+  28:	89 44 24 04          	mov    %eax,0x4(%esp)
+  2c:	c7 04 24 16 00 00 00 	movl   $0x16,(%esp)
+  33:	e8 00 00 00 00       	call   38 <_main+0x38>
+  38:	83 44 24 1c 01       	addl   $0x1,0x1c(%esp)
+  3d:	83 7c 24 1c 0a       	cmpl   $0xa,0x1c(%esp)
+  42:	7e e0                	jle    24 <_main+0x24>
+  44:	c7 04 24 0a 00 00 00 	movl   $0xa,(%esp)
+  4b:	e8 00 00 00 00       	call   50 <_main+0x50>
+  50:	b8 00 00 00 00       	mov    $0x0,%eax
+  55:	c9                   	leave  
+  56:	c3                   	ret    
+  57:	90                   	nop

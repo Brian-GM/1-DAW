@@ -1,0 +1,79 @@
+-- NOTA 10
+DROP DATABASE CONCURSO_COCINA;
+CREATE DATABASE CONCURSO_COCINA  DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+USE CONCURSO_COCINA;
+
+CREATE TABLE IF NOT EXISTS PAIS (
+    nom_pais VARCHAR (50) ,
+    capital VARCHAR (50) NOT NULL,
+    CONSTRAINT PK_PAI PRIMARY KEY (nom_pais),
+    CONSTRAINT UN_PAI UNIQUE KEY (capital)
+);
+
+CREATE TABLE IF NOT EXISTS INGREDIENTE (
+    nom_ingred VARCHAR (50) ,
+    metodo_conservación VARCHAR (50) NOT NULL,
+    temperatura VARCHAR (50),
+    nombrepais VARCHAR (50) NOT NULL,
+    CONSTRAINT PK_ING PRIMARY KEY (nom_ingred),
+    CONSTRAINT FK_ING_PAIS FOREIGN KEY (nombrepais) REFERENCES PAIS (nom_pais)
+
+);
+CREATE TABLE IF NOT EXISTS CONCURSANTE (
+    numero INT ,
+    nom_concur VARCHAR (150) NOT NULL,
+    tipo ENUM ('AMATEUR','PROFESIONAL')NOT NULL,
+    nombrepais VARCHAR (50) NOT NULL,
+    CONSTRAINT PK_CON PRIMARY KEY (numero),
+    CONSTRAINT FK_CON_PAI FOREIGN KEY (nombrepais) REFERENCES PAIS (nom_pais)
+
+
+);
+CREATE TABLE IF NOT EXISTS RECETA (
+    nom_receta VARCHAR (200),
+    precio FLOAT (5,2) NOT NULL,
+    tipo ENUM ('ENTRANTE','PLATO','POSTRE')NOT NULL ,
+    vino ENUM ('BLANCO','TINTO','ROSADO') ,
+    cubierto ENUM ('CARNE','PESCADO') ,
+    azúcar BOOLEAN  ,
+    lactosa BOOLEAN, 
+    nombrepais VARCHAR (50) NOT NULL,
+    numeroconcursante  INT NOT NULL,
+    CONSTRAINT PK_REC PRIMARY KEY (nom_receta),
+    CONSTRAINT FK_REC_PAI FOREIGN KEY (nombrepais) REFERENCES PAIS (nom_pais),
+    CONSTRAINT FK_REC_CON FOREIGN KEY (numeroconcursante) REFERENCES CONCURSANTE (numero)
+);
+
+CREATE TABLE IF NOT EXISTS COMPONE (
+    nom_ingred VARCHAR (50) ,
+    nom_receta VARCHAR (200),
+    cantidad VARCHAR (150)NOT NULL,
+    preparación VARCHAR (250) NOT NULL,
+    CONSTRAINT PK_COM PRIMARY KEY (nom_ingred,nom_receta),
+    CONSTRAINT FK_COM_ING FOREIGN KEY (nom_ingred) REFERENCES INGREDIENTE (nom_ingred),
+    CONSTRAINT FK_COM_REC FOREIGN KEY (nom_receta) REFERENCES RECETA (nom_receta)
+
+
+);
+CREATE TABLE IF NOT EXISTS PROFESIONAL (
+    numeroconcursante INT ,
+    CONSTRAINT PK_PRO PRIMARY KEY (numeroconcursante),
+    CONSTRAINT FK_PRO_CON FOREIGN KEY (numeroconcursante) REFERENCES CONCURSANTE(numero)
+
+
+   
+);
+
+
+
+
+CREATE TABLE IF NOT EXISTS AMATEUR (
+    numeroconcursante INT  ,
+    numeroprofesional INT NOT NULL,
+    CONSTRAINT PK_AMA PRIMARY KEY (numeroconcursante),
+    CONSTRAINT FK_AMA_CON FOREIGN KEY (numeroconcursante) REFERENCES CONCURSANTE (numero),
+    CONSTRAINT FK_AMA_PRO FOREIGN KEY (numeroprofesional) REFERENCES PROFESIONAL (numeroconcursante)
+
+
+   
+);

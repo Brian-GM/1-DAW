@@ -1,0 +1,111 @@
+/*#1. 3ptos*/
+DROP DATABASE IF EXISTS empleados; 
+CREATE DATABASE empleados DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci; 
+USE empleados; 
+
+CREATE TABLE  habilidad ( 
+CodHab  CHAR(5) PRIMARY KEY , 
+DesHab  VARCHAR(30) UNIQUE  
+)ENGINE=InnoDB; 
+
+CREATE TABLE  centro ( 
+CodCen CHAR(4)  PRIMARY KEY, 
+CodEmpDir INT(10) , 
+NomCen VARCHAR(30) NOT NULL UNIQUE, 
+DirCen VARCHAR(50) , 
+PobCen VARCHAR(15) 
+)ENGINE=InnoDB; 
+
+CREATE TABLE  departamento ( 
+CodDep CHAR(5) PRIMARY KEY, 
+CodEmpDir INT(10), 
+CodDepDep CHAR(5), 
+CodCen CHAR(4), 
+NomDep VARCHAR(40) NOT NULL UNIQUE, 
+PreAnu DECIMAL(12,2), 
+TiDir ENUM('F','P') 
+)ENGINE=InnoDB; 
+
+CREATE TABLE  empleado ( 
+CodEmp INT(10)  AUTO_INCREMENT PRIMARY KEY, 
+CodDep CHAR(5), 
+ExTelEmp VARCHAR(9), FecInEmp DATE, 
+FecNaEmp DATE, 
+NifEmp VARCHAR(9), 
+NomEmp VARCHAR(40), 
+NumHi INT(1) , 
+SalEmp DECIMAL(12,2) 
+)ENGINE=InnoDB; 
+
+CREATE TABLE  habemp ( 
+CodHab  CHAR(5), 
+CodEmp  INT(10) , 
+NivHab  TINYINT , 
+PRIMARY KEY (CodEmp,CodHab) ) 
+ENGINE=InnoDB; 
+
+CREATE TABLE  hijo(
+CodEmp  INT(10)	,
+NumHij  INT(1)	,
+FecNaHi  DATE, 
+NomHi  VARCHAR(40) 	, 
+PRIMARY KEY  (CodEmp,NumHij) 
+) ENGINE=InnoDB ; 
+
+ALTER TABLE departamento 
+ADD CONSTRAINT fk_dep_cen FOREIGN KEY (CodCen) REFERENCES centro(CodCen) 
+ON DELETE NO ACTION ON UPDATE CASCADE; 
+
+ALTER TABLE departamento 
+ADD CONSTRAINT fk_dep_emp FOREIGN KEY (CodEmpDir) REFERENCES empleado(CodEmp) 
+ON DELETE NO ACTION ON UPDATE CASCADE; 
+
+ALTER TABLE departamento 
+ADD CONSTRAINT fk_dep_dep FOREIGN KEY (CodDepDep) REFERENCES departamento(CodDep) 
+ON DELETE NO ACTION ON UPDATE CASCADE; 
+
+ALTER TABLE empleado 
+ADD CONSTRAINT fk_emp_dep FOREIGN KEY (CodDep) REFERENCES departamento(CodDep) 
+ON DELETE NO ACTION ON UPDATE CASCADE; 
+
+ALTER TABLE centro 
+ADD CONSTRAINT fk_cen_emp FOREIGN KEY (CodEmpDir) REFERENCES empleado(CodEmp) 
+ON DELETE NO ACTION ON UPDATE CASCADE; 
+
+ALTER TABLE hijo 
+ADD CONSTRAINT fk_hij_emp FOREIGN KEY (CodEmp) REFERENCES empleado(CodEmp) 
+ON DELETE NO ACTION ON UPDATE CASCADE; 
+
+ALTER TABLE habemp 
+ADD CONSTRAINT fk_habemp_emp FOREIGN KEY (CodEmp) REFERENCES empleado(CodEmp) 
+ON DELETE NO ACTION ON UPDATE CASCADE; 
+
+ALTER TABLE habemp 
+ADD CONSTRAINT fk_habemp_hab FOREIGN KEY (CodHab) REFERENCES habilidad(CodHab) 
+ON DELETE NO ACTION ON UPDATE CASCADE; 
+
+/*#2.1 pto*/ 
+ALTER TABLE centro 
+ADD Tidir ENUM('F','P') DEFAULT 'P' AFTER NomCen; 
+
+/*#3.1 pto*/ 
+ALTER TABLE departamento 
+CHANGE CodEmpDir EmpJefe int(10); 
+
+/*#4. 2ptos*/ 
+ALTER TABLE hijo
+DROP FOREIGN KEY fk_hij_emp;
+
+ALTER TABLE hijo 
+DROP PRIMARY KEY; 
+
+
+/*#5. 1 pto*/
+ALTER TABLE habemp 
+DROP FOREIGN KEY fk_habemp_hab; 
+
+/*#6. 1 pto*/ 
+DROP TABLE hijo; 
+
+/*#7. 1 ptos*/ 
+RENAME TABLE centro TO center; 
